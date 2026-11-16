@@ -5,7 +5,7 @@ const shell = 'mx-auto w-full max-w-[1296px] px-5 sm:px-8 xl:px-12'
 const telegram = 'https://t.me/Ratofficer'
 const email = 'mailto:naratoffice@gmail.com'
 const navTargets = ['#about', '#approach', '#work', '#contact']
-const primaryButton = 'inline-flex min-h-13 items-center justify-center gap-4 rounded-lg bg-gold px-6 font-semibold text-ink transition hover:-translate-y-0.5 hover:bg-[#e7ba52]'
+const primaryButton = 'inline-flex min-h-13 items-center justify-center gap-4 rounded-lg bg-gold-fill px-6 font-semibold text-on-gold transition hover:-translate-y-0.5 hover:bg-[#e7ba52]'
 const outlineButton = 'inline-flex min-h-13 items-center justify-center gap-4 rounded-lg border border-line-strong bg-ink/60 px-6 font-semibold text-warm transition hover:-translate-y-0.5 hover:border-gold hover:bg-gold/10'
 
 function ArrowRight({ className = 'size-5' }) {
@@ -14,6 +14,12 @@ function ArrowRight({ className = 'size-5' }) {
 
 function ArrowUpRight({ className = 'size-5' }) {
   return <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m7 17 10-10M8 7h9v9" /></svg>
+}
+
+function ThemeIcon({ theme }) {
+  return theme === 'dark'
+    ? <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></svg>
+    : <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.5 8.5 0 0 1 8.5 3.8a8.5 8.5 0 1 0 11.7 11.7Z" /></svg>
 }
 
 function Pin() {
@@ -99,9 +105,19 @@ function App() {
     try { return localStorage.getItem('portfolio-language') === 'en' ? 'en' : 'km' }
     catch { return 'km' }
   })
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark' }
+    catch { return 'dark' }
+  })
   const [menuOpen, setMenuOpen] = useState(false)
   const audioRef = useRef(null)
   const t = content[locale]
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#faf6ee' : '#0e1116')
+    try { localStorage.setItem('portfolio-theme', theme) } catch { /* Storage may be unavailable. */ }
+  }, [theme])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -174,11 +190,11 @@ function App() {
         autoPlay
         loop
       />
-      <a href="#main" className="sr-only focus:not-sr-only fixed top-3 left-3 z-50 rounded bg-gold px-4 py-2 text-ink">{locale === 'km' ? 'រំលងទៅមាតិកា' : 'Skip to content'}</a>
+      <a href="#main" className="sr-only focus:not-sr-only fixed top-3 left-3 z-50 rounded bg-gold-fill px-4 py-2 text-on-gold">{locale === 'km' ? 'រំលងទៅមាតិកា' : 'Skip to content'}</a>
       <header id="top" className="relative z-20 border-b border-line-soft bg-ink">
-        <div className={`${shell} flex min-h-18 items-center justify-between gap-6 lg:min-h-22`}>
-          <a href="#top" className="flex shrink-0 items-center gap-3" aria-label="Chheak Narat — home">
-            <span className="grid size-10 place-items-center rounded-[9px] bg-gold font-khmer text-[27px] leading-[1.5] text-ink sm:size-11" aria-hidden="true">ន</span>
+        <div className={`${shell} flex min-h-18 items-center justify-between gap-2 sm:gap-6 lg:min-h-22`}>
+          <a href="#top" className="flex shrink-0 items-center gap-2 sm:gap-3" aria-label="Chheak Narat — home">
+            <span className="grid size-10 place-items-center rounded-[9px] bg-gold-fill font-khmer text-[27px] leading-[1.5] text-on-gold sm:size-11" aria-hidden="true">ន</span>
             <span lang="en" className="font-heading text-[13px] leading-[1.05] font-bold sm:text-sm">CHHEAK<br />NARAT<span className="text-gold">.</span></span>
           </a>
           <nav className="ml-auto hidden items-center gap-5 lg:flex xl:gap-9" aria-label="Main navigation">
@@ -187,6 +203,17 @@ function App() {
             ))}
           </nav>
           <div className="flex items-center gap-2 lg:gap-4">
+            <button
+              type="button"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="grid size-11 shrink-0 place-items-center rounded-lg border border-line-strong text-warm transition-colors hover:border-gold hover:text-gold"
+              aria-label={theme === 'dark'
+                ? (locale === 'km' ? 'ប្ដូរទៅផ្ទៃភ្លឺ' : 'Switch to light mode')
+                : (locale === 'km' ? 'ប្ដូរទៅផ្ទៃងងឹត' : 'Switch to dark mode')}
+              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            >
+              <ThemeIcon theme={theme} />
+            </button>
             <button
               type="button"
               onClick={() => setLocale(locale === 'km' ? 'en' : 'km')}
@@ -198,7 +225,7 @@ function App() {
               <span className="mx-2 text-[#65635e]">/</span>
               <span className={locale === 'en' ? 'text-warm' : 'text-muted'} lang="en">EN</span>
             </button>
-            <a href={telegram} target="_blank" rel="noopener noreferrer" className="hidden min-h-11 items-center gap-4 rounded-lg bg-gold px-4 text-sm font-bold text-ink transition hover:-translate-y-0.5 hover:bg-[#e7ba52] lg:inline-flex">
+            <a href={telegram} target="_blank" rel="noopener noreferrer" className="hidden min-h-11 items-center gap-4 rounded-lg bg-gold-fill px-4 text-sm font-bold text-on-gold transition hover:-translate-y-0.5 hover:bg-[#e7ba52] lg:inline-flex">
               {t.talk}<ArrowRight className="size-4" />
             </a>
             <button
@@ -270,7 +297,7 @@ function App() {
           </div>
         </section>
 
-        <div className="border-y border-line bg-panel">
+        <div className="border-y border-line bg-panel transition-colors duration-300">
           <div className={`${shell} reveal grid sm:grid-cols-3`}>
             {t.facts.map(([title, subtitle], index) => (
               <div key={index} className="flex min-h-20 items-center gap-5 border-b border-line py-4 sm:min-h-27 sm:gap-3 sm:border-b-0 sm:border-l sm:px-4 xl:gap-5 xl:px-7 sm:last:border-r">
@@ -368,7 +395,7 @@ function App() {
       <footer className="bg-ink">
         <div className={`${shell} flex min-h-27 flex-wrap items-center justify-between gap-5 py-6`}>
           <div className="flex items-center gap-2.5 whitespace-nowrap font-heading text-[13px] font-bold" lang="en">
-            <span className="grid size-8 place-items-center rounded-md bg-gold font-khmer text-xl leading-normal text-ink" aria-hidden="true">ន</span>
+            <span className="grid size-8 place-items-center rounded-md bg-gold-fill font-khmer text-xl leading-normal text-on-gold" aria-hidden="true">ន</span>
             CHHEAK NARAT<span className="-ml-2 text-gold">.</span>
           </div>
           <p className="order-3 w-full text-[13px] text-muted md:order-0 md:w-auto">{t.footer}</p>
