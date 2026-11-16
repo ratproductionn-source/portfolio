@@ -25,6 +25,8 @@ export const content = {
       { title: 'បង្កើត', english: 'CREATE', body: 'ប្រែក្លាយគំនិតទៅជាអ្វីដែលអាចប្រើបាន ដោយយកចិត្តទុកដាក់លើព័ត៌មានលម្អិត។' },
       { title: 'កែលម្អ', english: 'REFINE', body: 'ស្តាប់មតិយោបល់ សាកល្បងម្តងទៀត និងបន្តរីកចម្រើនពីមួយថ្ងៃទៅមួយថ្ងៃ។' },
     ],
+    aiTitle: 'ជ្រុង AI',
+    aiDescription: 'រូបសញ្ញាឧបករណ៍ AI ដែលជួយស្វែងយល់ និងបង្កើតអ្វីថ្មីៗ។',
     workTitle: ['កន្លែងសម្រាប់', 'គម្រោងរបស់ខ្ញុំ។'],
     workIntro: 'គម្រោងនឹងត្រូវបង្ហាញនៅទីនេះ។ សូមត្រឡប់មកមើលម្តងទៀតនៅពេលខាងមុខ!',
     projects: [
@@ -63,6 +65,8 @@ export const content = {
       { title: 'Create', english: 'CREATE', body: 'Turn ideas into something useful, paying attention to the little details.' },
       { title: 'Refine', english: 'REFINE', body: 'Listen to feedback, try again, and keep getting better every day.' },
     ],
+    aiTitle: 'The AI corner',
+    aiDescription: 'A small space for AI tools that help us explore and create new things.',
     workTitle: ['A space for', 'my projects.'],
     workIntro: 'Projects will appear here. Come back soon to see what I have been building!',
     projects: [

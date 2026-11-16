@@ -1,10 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
 import { content } from './content.js'
+import claudeIcon from '@lobehub/icons-static-svg/icons/claude.svg?url'
+import chatgptIcon from '@lobehub/icons-static-svg/icons/openai.svg?url'
+import deepseekIcon from '@lobehub/icons-static-svg/icons/deepseek.svg?url'
+import geminiIcon from '@lobehub/icons-static-svg/icons/gemini.svg?url'
+import perplexityIcon from '@lobehub/icons-static-svg/icons/perplexity.svg?url'
+import copilotIcon from '@lobehub/icons-static-svg/icons/githubcopilot.svg?url'
 
 const shell = 'mx-auto w-full max-w-[1296px] px-5 sm:px-8 xl:px-12'
 const telegram = 'https://t.me/Ratofficer'
 const email = 'mailto:naratoffice@gmail.com'
 const navTargets = ['#about', '#approach', '#work', '#contact']
+const aiTools = [
+  { name: 'Claude', icon: claudeIcon },
+  { name: 'ChatGPT', icon: chatgptIcon },
+  { name: 'DeepSeek', icon: deepseekIcon },
+  { name: 'Gemini', icon: geminiIcon },
+  { name: 'Perplexity', icon: perplexityIcon },
+  { name: 'GitHub Copilot', icon: copilotIcon },
+]
 const primaryButton = 'inline-flex min-h-13 items-center justify-center gap-4 rounded-lg bg-gold-fill px-6 font-semibold text-on-gold transition hover:-translate-y-0.5 hover:bg-[#e7ba52]'
 const outlineButton = 'inline-flex min-h-13 items-center justify-center gap-4 rounded-lg border border-line-strong bg-ink/60 px-6 font-semibold text-warm transition hover:-translate-y-0.5 hover:border-gold hover:bg-gold/10'
 
@@ -347,6 +361,27 @@ function App() {
                   </div>
                 </article>
               ))}
+            </div>
+            <div className="reveal mt-18 border-t border-line-strong pt-12 md:mt-22">
+              <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+                <div>
+                  <span className="font-code text-[11px] tracking-wider text-gold" lang="en">AI / THE CREATIVE TOOLBOX</span>
+                  <h3 className={`mt-3 ${locale === 'km' ? 'font-khmer text-[clamp(34px,3vw,44px)] leading-[1.35]' : 'font-heading text-[clamp(31px,3vw,42px)] leading-[1.2] font-semibold tracking-tight'}`}>{t.aiTitle}</h3>
+                </div>
+                <p className="max-w-[350px] text-sm leading-[1.8] text-muted">{t.aiDescription}</p>
+              </div>
+              <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6" aria-label="AI tools">
+                {aiTools.map((tool, index) => (
+                  <div key={tool.name} className="ai-card reveal relative flex min-h-[174px] flex-col items-center justify-center gap-4 overflow-hidden rounded-xl border border-line-strong bg-card p-4 text-center" style={{ transitionDelay: `${index * 65}ms` }}>
+                    <span className="absolute top-3 right-3 font-code text-[10px] text-muted" aria-hidden="true">0{index + 1}</span>
+                    <span className="ai-icon-stage relative grid size-[72px] place-items-center">
+                      <span className="ai-orbit absolute inset-0 rounded-full border border-gold/30" aria-hidden="true" />
+                      <span className="ai-logo relative z-10 block size-10 bg-gold" style={{ maskImage: `url("${tool.icon}")`, WebkitMaskImage: `url("${tool.icon}")` }} aria-hidden="true" />
+                    </span>
+                    <span className="font-heading text-[15px] font-semibold leading-[1.3] text-warm" lang="en">{tool.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>

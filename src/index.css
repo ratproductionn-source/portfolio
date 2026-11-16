@@ -59,7 +59,25 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
   .reveal.is-visible { opacity: 1; transform: translateY(0); }
   .approach-card.reveal.is-visible:hover { transform: translateY(-4px); }
+  @keyframes ai-orbit-spin { to { transform: rotate(360deg); } }
+  .ai-orbit { animation: ai-orbit-spin 16s linear infinite; }
+  .ai-card:nth-child(even) .ai-orbit { animation-direction: reverse; animation-duration: 20s; }
+  .ai-card.reveal.is-visible:hover { transform: translateY(-6px); }
+  .ai-card:hover .ai-logo { transform: scale(1.14) rotate(-6deg); }
 }
+
+.ai-card::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 43%, color-mix(in srgb, var(--color-gold) 11%, transparent), transparent 67%);
+  opacity: .35; transition: opacity .4s ease;
+}
+.ai-card:hover::before { opacity: 1; }
+.ai-card:hover { border-color: var(--color-gold); }
+.ai-orbit::after {
+  content: ''; position: absolute; top: -3px; left: calc(50% - 3px);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--color-gold);
+}
+.ai-logo { mask-repeat: no-repeat; mask-position: center; mask-size: contain; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; -webkit-mask-size: contain; transition: transform .45s ease, background-color .3s ease; }
 
 .hero-texture {
   background-image:

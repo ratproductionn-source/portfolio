@@ -2,6 +2,7 @@
 
 A bilingual Khmer/English student developer portfolio built with React, Vite, and Tailwind CSS.
 Visitors can switch between dark and light themes; their choice is saved in the browser.
+The animated AI icons use brand SVGs from [LobeHub Icons](https://github.com/lobehub/lobe-icons) (MIT).
 
 ## Run locally
 
