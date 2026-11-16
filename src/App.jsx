@@ -24,14 +24,6 @@ function TelegramIcon() {
   return <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true"><path d="m21 3-3.2 17-5.4-4-3 2-1-5.2L3 11 21 3Z" /><path d="m8.4 12.8 9-7-5 10.2" /></svg>
 }
 
-function MusicIcon({ playing }) {
-  return (
-    <span className={`music-bars ${playing ? 'music-bars-playing' : ''}`} aria-hidden="true">
-      <span /><span /><span /><span />
-    </span>
-  )
-}
-
 function Lotus() {
   return <svg className="mx-auto size-12 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" aria-hidden="true"><path d="M12 3 C15 7.5 15 12.5 12 17 C9 12.5 9 7.5 12 3 Z" /><path d="M12 17 C8 16.5 5 13.5 3.5 9 C7.5 9.5 10.5 12.5 12 17 Z" /><path d="M12 17 C16 16.5 19 13.5 20.5 9 C16.5 9.5 13.5 12.5 12 17 Z" /><path d="M6 20.5 H18" /></svg>
 }
@@ -108,10 +100,7 @@ function App() {
     catch { return 'km' }
   })
   const [menuOpen, setMenuOpen] = useState(false)
-  const [musicPlaying, setMusicPlaying] = useState(false)
-  const [musicError, setMusicError] = useState(false)
   const audioRef = useRef(null)
-  const manuallyPaused = useRef(false)
   const t = content[locale]
 
   useEffect(() => {
@@ -120,13 +109,14 @@ function App() {
     audio.volume = 0.35
 
     const tryPlay = () => {
-      if (!manuallyPaused.current && audio.paused) {
-        // Browsers may reject audible autoplay until a visitor interacts.
-        audio.play().catch(() => {})
-      }
+      if (!audio.paused) return
+      // Browsers may reject audible autoplay until a visitor interacts.
+      audio.play().then(() => {
+        window.removeEventListener('pointerdown', startAfterInteraction)
+        window.removeEventListener('keydown', startAfterInteraction)
+      }).catch(() => {})
     }
     const startAfterInteraction = (event) => {
-      if (event.target?.closest?.('[data-music-control]')) return
       if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return
       tryPlay()
     }
@@ -139,18 +129,6 @@ function App() {
       window.removeEventListener('keydown', startAfterInteraction)
     }
   }, [])
-
-  const toggleMusic = () => {
-    const audio = audioRef.current
-    if (!audio || musicError) return
-    if (audio.paused) {
-      manuallyPaused.current = false
-      audio.play().catch(() => {})
-    } else {
-      manuallyPaused.current = true
-      audio.pause()
-    }
-  }
 
   useEffect(() => {
     document.documentElement.lang = locale
@@ -193,10 +171,8 @@ function App() {
         ref={audioRef}
         src="/audio/rat-music.mp3"
         preload="none"
+        autoPlay
         loop
-        onPlay={() => setMusicPlaying(true)}
-        onPause={() => setMusicPlaying(false)}
-        onError={() => setMusicError(true)}
       />
       <a href="#main" className="sr-only focus:not-sr-only fixed top-3 left-3 z-50 rounded bg-gold px-4 py-2 text-ink">{locale === 'km' ? 'រំលងទៅមាតិកា' : 'Skip to content'}</a>
       <header id="top" className="relative z-20 border-b border-line-soft bg-ink">
@@ -402,26 +378,6 @@ function App() {
           </div>
         </div>
       </footer>
-      <button
-        type="button"
-        data-music-control
-        onClick={toggleMusic}
-        disabled={musicError}
-        aria-pressed={musicPlaying}
-        aria-label={musicError
-          ? (locale === 'km' ? 'មិនអាចចាក់តន្ត្រីបាន' : 'Music unavailable')
-          : musicPlaying
-            ? (locale === 'km' ? 'ផ្អាកតន្ត្រី' : 'Pause music')
-            : (locale === 'km' ? 'ចាក់តន្ត្រី' : 'Play music')}
-        className="fixed right-5 bottom-5 z-30 flex min-h-12 items-center gap-3 rounded-full border border-gold/40 bg-ink px-4 py-2 text-sm font-semibold text-warm shadow-[0_12px_35px_rgba(0,0,0,.45)] transition hover:border-gold hover:bg-card disabled:cursor-not-allowed disabled:opacity-50 sm:right-7 sm:bottom-7"
-      >
-        <MusicIcon playing={musicPlaying} />
-        <span>{musicError
-          ? (locale === 'km' ? 'តន្ត្រីមិនដំណើរការ' : 'Music unavailable')
-          : musicPlaying
-            ? (locale === 'km' ? 'ផ្អាកតន្ត្រី' : 'Pause music')
-            : (locale === 'km' ? 'ចាក់តន្ត្រី' : 'Play music')}</span>
-      </button>
     </>
   )
 }

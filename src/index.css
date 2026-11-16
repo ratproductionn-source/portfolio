@@ -23,21 +23,7 @@ body { margin: 0; background: var(--color-ink); color: var(--color-warm); font-f
 :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 4px; }
 button, a { -webkit-tap-highlight-color: transparent; }
 
-.music-bars { display: flex; align-items: center; justify-content: center; gap: 2px; width: 18px; height: 20px; }
-.music-bars span { width: 3px; height: 5px; border-radius: 3px; background: var(--color-gold); }
-.music-bars span:nth-child(2) { height: 12px; }
-.music-bars span:nth-child(3) { height: 17px; }
-.music-bars span:nth-child(4) { height: 9px; }
-
 @media (prefers-reduced-motion: no-preference) {
-  @keyframes music-wave {
-    0%, 100% { transform: scaleY(.45); }
-    50% { transform: scaleY(1); }
-  }
-  .music-bars-playing span { animation: music-wave .9s ease-in-out infinite; }
-  .music-bars-playing span:nth-child(2) { animation-delay: .15s; }
-  .music-bars-playing span:nth-child(3) { animation-delay: .3s; }
-  .music-bars-playing span:nth-child(4) { animation-delay: .45s; }
   @keyframes rise-in {
     from { opacity: 0; transform: translateY(22px); }
     to { opacity: 1; transform: translateY(0); }
