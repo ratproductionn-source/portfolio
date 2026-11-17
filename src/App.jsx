@@ -10,6 +10,7 @@ import copilotIcon from '@lobehub/icons-static-svg/icons/githubcopilot.svg?url'
 const shell = 'mx-auto w-full max-w-[1296px] px-5 sm:px-8 xl:px-12'
 const telegram = 'https://t.me/Ratofficer'
 const email = 'mailto:naratoffice@gmail.com'
+const siteAssets = import.meta.env.BASE_URL
 const navTargets = ['#about', '#approach', '#work', '#contact']
 const aiTools = [
   { name: 'Claude', icon: claudeIcon },
@@ -141,22 +142,29 @@ function App() {
     const tryPlay = () => {
       if (!audio.paused) return
       // Browsers may reject audible autoplay until a visitor interacts.
-      audio.play().then(() => {
-        window.removeEventListener('pointerdown', startAfterInteraction)
-        window.removeEventListener('keydown', startAfterInteraction)
-      }).catch(() => {})
+      audio.play().catch(() => {})
     }
     const startAfterInteraction = (event) => {
       if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return
       tryPlay()
     }
+    const stopRetrying = () => {
+      window.removeEventListener('pointerdown', startAfterInteraction)
+      window.removeEventListener('click', startAfterInteraction)
+      window.removeEventListener('touchend', startAfterInteraction)
+      window.removeEventListener('keydown', startAfterInteraction)
+    }
 
+    audio.addEventListener('playing', stopRetrying)
     tryPlay()
     window.addEventListener('pointerdown', startAfterInteraction)
+    window.addEventListener('click', startAfterInteraction)
+    window.addEventListener('touchend', startAfterInteraction)
     window.addEventListener('keydown', startAfterInteraction)
+    if (!audio.paused) stopRetrying()
     return () => {
-      window.removeEventListener('pointerdown', startAfterInteraction)
-      window.removeEventListener('keydown', startAfterInteraction)
+      audio.removeEventListener('playing', stopRetrying)
+      stopRetrying()
     }
   }, [])
 
@@ -199,8 +207,8 @@ function App() {
     <>
       <audio
         ref={audioRef}
-        src="/audio/rat-music.mp3"
-        preload="none"
+        src={`${siteAssets}audio/rat-music.mp3`}
+        preload="auto"
         autoPlay
         loop
       />
@@ -295,7 +303,7 @@ function App() {
               <div className="art-orbit art-orbit-two" aria-hidden="true" />
               <span className="art-caption art-caption-top" aria-hidden="true" lang="en">01 / AN INTRODUCTION</span>
               <div className="portrait-frame">
-                <img src="/images/narat-portrait.webp" alt="Portrait of Chheak Narat" width="1122" height="1402" fetchPriority="high" decoding="async" className="h-full w-full object-cover saturate-[.87]" />
+                <img src={`${siteAssets}images/narat-portrait.webp`} alt="Portrait of Chheak Narat" width="1122" height="1402" fetchPriority="high" decoding="async" className="h-full w-full object-cover saturate-[.87]" />
                 <div className="portrait-shade" aria-hidden="true" />
                 <AngkorLine />
               </div>
